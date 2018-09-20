@@ -119,4 +119,13 @@ class DockerRepositoryNameTests {
         Assert.assertEquals(repo0.resolve(tag0, "localhost:3000"), "localhost:3000/namespace/repo1:latest")
         Assert.assertEquals(repo0.resolve(tag1, "localhost:3000"), "localhost:3000/namespace/repo1:other")
     }
+
+    @Test
+    fun resolve_with_hostname_slash() {
+
+        Assert.assertEquals(repo0.resolve(tag0, "docker.io/"), "docker.io/namespace/repo1:latest")
+        Assert.assertEquals(repo0.resolve(tag1, "docker.io/"), "docker.io/namespace/repo1:other")
+        Assert.assertEquals(repo0.resolve(tag0, "localhost:3000/"), "localhost:3000/namespace/repo1:latest")
+        Assert.assertEquals(repo0.resolve(tag1, "localhost:3000/"), "localhost:3000/namespace/repo1:other")
+    }
 }
