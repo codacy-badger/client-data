@@ -7,20 +7,25 @@ import java.lang.IllegalArgumentException
 
 class DockerRepositoryNameTests {
 
+    private lateinit var repo0: DockerRepositoryName
+    private lateinit var repo1: DockerRepositoryName
+
+    private lateinit var tag0: DockerTag
+    private lateinit var tag1: DockerTag
+
     private lateinit var repos: List<DockerRepositoryName>
     private lateinit var tags: List<DockerTag>
 
     @Before
     fun before() {
 
-        repos = listOf(
-                DockerRepositoryName("namespace/repo1"),
-                DockerRepositoryName("repo2")
-        )
-        tags = listOf(
-                DockerTag.LATEST,
-                DockerTag.of("other")
-        )
+        repo0 = DockerRepositoryName("namespace/repo1")
+        repo1 = DockerRepositoryName("repo2")
+        tag0 = DockerTag.LATEST
+        tag1 = DockerTag.of("other")
+
+        repos = listOf(repo0, repo1)
+        tags = listOf(tag0, tag1)
     }
 
     @Test
@@ -78,8 +83,6 @@ class DockerRepositoryNameTests {
     @Test
     fun get() {
 
-        val repo0 = repos[0]
-        val repo1 = repos[1]
         Assert.assertEquals(repo0[0], repo0.firstPathComponent)
         Assert.assertEquals(repo1[0], repo1.firstPathComponent)
         Assert.assertEquals(repo0[0], "namespace")
@@ -90,8 +93,6 @@ class DockerRepositoryNameTests {
     @Test
     fun to_string() {
 
-        val repo0 = repos[0]
-        val repo1 = repos[1]
         Assert.assertEquals(repo0.toString(), "namespace/repo1")
         Assert.assertEquals(repo1.toString(), "repo2")
     }
@@ -99,8 +100,6 @@ class DockerRepositoryNameTests {
     @Test
     fun as_string() {
 
-        val repo0 = repos[0]
-        val repo1 = repos[1]
         Assert.assertEquals(repo0.asString(), "namespace/repo1")
         Assert.assertEquals(repo1.asString(), "repo2")
     }
@@ -108,9 +107,16 @@ class DockerRepositoryNameTests {
     @Test
     fun to_string_and_as_string_are_the_same() {
 
-        val repo0 = repos[0]
-        val repo1 = repos[1]
         Assert.assertEquals(repo0.asString(), repo0.toString())
         Assert.assertEquals(repo1.asString(), repo1.toString())
+    }
+
+    @Test
+    fun resolve_with_hostname() {
+
+        Assert.assertEquals(repo0.resolve(tag0, "docker.io"), "docker.io/namespace/repo1:latest")
+        Assert.assertEquals(repo0.resolve(tag1, "docker.io"), "docker.io/namespace/repo1:other")
+        Assert.assertEquals(repo0.resolve(tag0, "localhost:3000"), "localhost:3000/namespace/repo1:latest")
+        Assert.assertEquals(repo0.resolve(tag1, "localhost:3000"), "localhost:3000/namespace/repo1:other")
     }
 }
