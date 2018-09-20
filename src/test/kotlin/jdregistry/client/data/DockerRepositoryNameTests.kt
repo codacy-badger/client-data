@@ -41,6 +41,10 @@ class DockerRepositoryNameTests {
 
             Assert.assertEquals(pair.first.resolve(pair.second), expected[index])
         }
+
+        // resolve implicit
+        Assert.assertEquals(repo0.resolve(), "namespace/repo1:latest")
+        Assert.assertEquals(repo1.resolve(), "repo2:latest")
     }
 
     @Test
@@ -114,18 +118,44 @@ class DockerRepositoryNameTests {
     @Test
     fun resolve_with_hostname() {
 
+        // Explicit Tag
         Assert.assertEquals(repo0.resolve(tag0, "docker.io"), "docker.io/namespace/repo1:latest")
         Assert.assertEquals(repo0.resolve(tag1, "docker.io"), "docker.io/namespace/repo1:other")
         Assert.assertEquals(repo0.resolve(tag0, "localhost:3000"), "localhost:3000/namespace/repo1:latest")
         Assert.assertEquals(repo0.resolve(tag1, "localhost:3000"), "localhost:3000/namespace/repo1:other")
+
+        Assert.assertEquals(repo1.resolve(tag0, "docker.io"), "docker.io/repo2:latest")
+        Assert.assertEquals(repo1.resolve(tag1, "docker.io"), "docker.io/repo2:other")
+        Assert.assertEquals(repo1.resolve(tag0, "localhost:3000"), "localhost:3000/repo2:latest")
+        Assert.assertEquals(repo1.resolve(tag1, "localhost:3000"), "localhost:3000/repo2:other")
+
+        // Implicit Tag
+        Assert.assertEquals(repo0.resolve(host = "docker.io"), "docker.io/namespace/repo1:latest")
+        Assert.assertEquals(repo0.resolve(host = "localhost:3000"), "localhost:3000/namespace/repo1:latest")
+
+        Assert.assertEquals(repo1.resolve(host = "docker.io"), "docker.io/repo2:latest")
+        Assert.assertEquals(repo1.resolve(host = "localhost:3000"), "localhost:3000/repo2:latest")
     }
 
     @Test
     fun resolve_with_hostname_slash() {
 
+        // Explicit tag
         Assert.assertEquals(repo0.resolve(tag0, "docker.io/"), "docker.io/namespace/repo1:latest")
         Assert.assertEquals(repo0.resolve(tag1, "docker.io/"), "docker.io/namespace/repo1:other")
         Assert.assertEquals(repo0.resolve(tag0, "localhost:3000/"), "localhost:3000/namespace/repo1:latest")
         Assert.assertEquals(repo0.resolve(tag1, "localhost:3000/"), "localhost:3000/namespace/repo1:other")
+
+        Assert.assertEquals(repo1.resolve(tag0, "docker.io/"), "docker.io/repo2:latest")
+        Assert.assertEquals(repo1.resolve(tag1, "docker.io/"), "docker.io/repo2:other")
+        Assert.assertEquals(repo1.resolve(tag0, "localhost:3000/"), "localhost:3000/repo2:latest")
+        Assert.assertEquals(repo1.resolve(tag1, "localhost:3000/"), "localhost:3000/repo2:other")
+
+        // Implicit Tag
+        Assert.assertEquals(repo0.resolve(host = "docker.io/"), "docker.io/namespace/repo1:latest")
+        Assert.assertEquals(repo0.resolve(host = "localhost:3000/"), "localhost:3000/namespace/repo1:latest")
+
+        Assert.assertEquals(repo1.resolve(host = "docker.io/"), "docker.io/repo2:latest")
+        Assert.assertEquals(repo1.resolve(host = "localhost:3000/"), "localhost:3000/repo2:latest")
     }
 }
