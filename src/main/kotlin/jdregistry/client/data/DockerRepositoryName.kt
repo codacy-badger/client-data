@@ -43,7 +43,7 @@ data class DockerRepositoryName(
     val numberOfComponents = 1 + moreComponents.size
     val hasMoreComponents = numberOfComponents > 1
 
-    operator fun get(index: Int) = if (index == 0) firstPathComponent else moreComponents[index]
+    operator fun get(index: Int) = if (index == 0) firstPathComponent else moreComponents[index - 1]
 
     fun asString() = firstPathComponent +
             moreComponents
