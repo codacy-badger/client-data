@@ -1,0 +1,26 @@
+{
+  "package": {
+    "name": "client-data",
+    "repo": "jdregistry",
+    "subject": "lukaszimmermann",
+    "labels": ["kotlin", "bintray", "gradle", "docker", "registry", "client", "data"],
+    "vcs_url": "https://github.com/JDregistry/client-data",
+    "licenses": ["MIT"]
+  },
+
+  "version": {
+    "name": "0.0.6",
+    "released": "2018-09-20",
+    "gpgSign": false
+  },
+
+  "files":
+  [
+    {
+      "includePattern": "build/libs/(.*)",
+      "uploadPattern": "jdregistry/client/data/0.0.6/$1",
+      "matrixParams": { "override": 1 }
+    }
+  ],
+  "publish": true
+}

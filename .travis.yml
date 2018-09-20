@@ -1,0 +1,15 @@
+language: java
+before_install:
+- "./gradlew clean"
+before_deploy:
+- "./gradlew generatePomFileForMavenPublication"
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+deploy:
+  provider: bintray
+  file: descriptor.json
+  user: lukaszimmermann
+  dry-run: false
+  skip_cleanup: true
+  key:
+    secure: DCKw6gq2YeHxhWHfrtbQhB8eFSS6wCe5RUh8UlQpy8XOxClxic6H0+tYBTzBrkZxt1An5Wh4bhwSXSQZoJEgAmr/lwATeZN/rex1pqMfMYkEKeBL1eo9sEnvaTJnHqmaKIUqr1tpehhxmkXx8j87dNEmF0K8rZf0pbBHDXIHQ4nS1qdTpxzieFDEgTfCxQgPKPTo0RTcTTx+BG1rzC1SfNaEa+UZtcAUwLv+I+dwJwvJm4UR5nDqwDc5Iia7+oz5D0DbArbFDCfh+Bi9aoTr2mS1jQb2E+krKBEFzq9Xge+Lb7nGxB1iSSGX+TQ9PaPx9hveSIcQG/QZY60W/VnNJYpE87i1RRAVlNDZPUTVsKFZlvcV5DjtyUgWunaEPwxpZshazUkZlke/5nItTHjF+htFyFhrDmFcRnqwIM1DMsXZS8wYc5C9xZvF8+Tl0vIWxdVHd05Dpnb8WN2t+Q9hzLobPwC7+2XDnkGc/sXwA5v6b9/2ZefZ51bOfFET/YzhV3wtytNxTHsLjEwf9zqloitqnt+6I1vHDglFaotMvXGOql/twlYQ7Fvcs4uFvMZ++qQWtRZej7HhS7qm6gbJv6Yq8R54MRA1JPOJbQpY9uHxPRIF9WbmdOfeCK+jC5j33CeQQ9C8Vt5Pv3WvcF7/BO6WLOgY9U8axXwmJRu3JG4=
